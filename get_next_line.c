@@ -15,29 +15,16 @@
 char	*next_lines(char *lines)
 {
 	size_t	i;
-	size_t	j;
 	char	*new_lines;
 
-	new_lines = NULL;
-	i = 0;
-	j = 0;
-	while (lines[i] && lines[i] != '\n')
-		i++;
-	if (lines[i])
-	{
-		new_lines = ft_callocs(((ft_strlen(lines) - i + 1)), sizeof(char));
-		if (!new_lines)
-			return (NULL);
-		if (lines[i] == '\n')
-			i++;
-		while (lines[i + j])
-		{
-			new_lines[j] = lines[i + j];
-			j++;
-		}
-	}
-	free(lines);
-	return (new_lines);
+	i = -1;
+	if (lines == NULL)
+		return NULL;
+	while (lines[++i] && lines[i] != '\n')
+		;
+	if (lines[i] == 0)
+		return NULL;
+	return (&lines[i + 1]);
 }
 
 char	*ft_strchr(const char *s, int c)
@@ -76,21 +63,18 @@ char	*ft_getlines(char *lines)
 	size_t	i;
 	char	*new_lines;
 
-	i = 0;
-	if (!(*lines))
+	i = -1;
+	if (lines == NULL)
 		return (NULL);
-	while (lines[i] && lines[i] != '\n')
-		i++;
-	new_lines = ft_callocs((i + 2), sizeof(char));
+	while (lines[++i] && lines[i] != '\n')
+		;
+	new_lines = ft_callocs((i + (lines[i] == '\n')), sizeof(char));
 	if (!new_lines)
 		return (NULL);
-	i = 0;
-	while (lines[i] && lines[i] != '\n')
-	{
+	i = -1;
+	while (lines[++i] && lines[i] != '\n')
 		new_lines[i] = lines[i];
-		i++;
-	}
-	if (lines[i] == '\n')
+	if (lines[i])
 		new_lines[i++] = '\n';
 	new_lines[i] = 0;
 	return (new_lines);
